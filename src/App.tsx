@@ -8,6 +8,21 @@ import {
 } from "react-router-dom";
 import { Home, NewNote } from "./pages";
 
+export type Note = {
+  id: string;
+} & NoteData;
+
+export type NoteData = {
+  title: String;
+  markdown: string;
+  tags: Tag[];
+};
+
+export type Tag = {
+  id: string;
+  label: string;
+};
+
 function App() {
   return (
     <Container className="my-4">
@@ -15,10 +30,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/new" element={<NewNote />} />
-          <Route path="/:id">
-            <Route index element={<Home />} />
-            <Route path="edit" element={<Home />} />
-          </Route>
+          {/* <Route path="/:id">
+          <Route />
+          <Route />
+        </Route> */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>

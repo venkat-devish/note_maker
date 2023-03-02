@@ -3,7 +3,7 @@ import { NoteForm } from "../components";
 const NewNote = () => {
   return (
     <>
-      <div>NewNote</div>
+      <h1>New Note</h1>
       <NoteForm />
     </>
   );

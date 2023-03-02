@@ -1,32 +1,68 @@
 import { Form, Stack, Row, Col, Button } from "react-bootstrap";
 import CreatableReactSelect from "react-select/creatable";
+import { Link } from "react-router-dom";
+import { FormEvent, useRef } from "react";
+import { NoteData } from "../App";
 
-const NoteForm = () => {
+type NoteFormProps = {
+  onSubmit: (data: NoteData) => void;
+};
+
+const NoteForm = ({ onSubmit }: NoteFormProps) => {
+  const titleInputRef = useRef<HTMLInputElement>(null);
+  const markdownInputRef = useRef<HTMLTextAreaElement>(null);
+
+  const _handleFormSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    onSubmit({
+      title: titleInputRef.current!.value,
+      markdown: markdownInputRef.current!.value,
+      tags: [],
+    });
+  };
+
   return (
-    <Form>
-      <Stack gap={4}>
+    <Form onSubmit={_handleFormSubmit}>
+      <Stack>
         <Row>
           <Col>
-            <Form.Group controlId="title">
+            <Form.Group className="mb-3" controlId="title">
               <Form.Label>Title</Form.Label>
-              <Form.Control required />
+              <Form.Control
+                ref={titleInputRef}
+                required
+                placeholder="Enter title"
+              />
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group controlId="tags">
+            <Form.Group className="mb-3" controlId="tags">
               <Form.Label>Tags</Form.Label>
               <CreatableReactSelect isMulti />
             </Form.Group>
           </Col>
         </Row>
-        <Form.Group controlId="markdown">
-          <Form.Label>Body</Form.Label>
-          <Form.Control required as="textarea" rows={15} />
+        <Form.Group className="mb-3" controlId="markdown">
+          <Form.Label>Markdown</Form.Label>
+          <Form.Control
+            ref={markdownInputRef}
+            required
+            as="textarea"
+            rows={15}
+            placeholder="Leave a note here"
+          />
         </Form.Group>
-        <Stack direction="horizontal" gap={4}>
-          <Button variant="outline-primary">Save</Button>
-          <Button variant="outline-secondary">Cancel</Button>
-        </Stack>
+      </Stack>
+      <Stack direction="horizontal" gap={2} className="justify-content-end">
+        <Link to="..">
+          <Button type="button" variant="outline-secondary">
+            Cancel
+          </Button>
+        </Link>
+        <Button type="submit" variant="outline-primary">
+          Save
+        </Button>
       </Stack>
     </Form>
   );
